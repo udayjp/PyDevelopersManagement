@@ -5,7 +5,7 @@
 {% block content %}
 <div class="text-center">
     <h2>Weightage</h2>
-    <form method="POST" nonvalidate> {% csrf_token %}
+    <form method="POST" novalidate> {% csrf_token %}
 
         {% for form in fm %}
         <span class="text-danger">{{ form.errors }}</span> <br>
