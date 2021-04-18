@@ -71,9 +71,7 @@ def searchResult(request,searchby,txt):
 					developersId.append(developer.id)
 					break
 		developers=Developer.objects.filter(id__in=developersId)
-	else:
-		developers=Developer.objects.filter(location__contains='Pune')
-
+	
 	return render(request,'search.html',{'locations':locations,'technologies':technologies,'domains':domains,'developers':developers})
 
 def details(request,id):
