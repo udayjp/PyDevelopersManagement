@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Developers{% endblock %}
+{% block content %}
+<div class="container text-center">
+{% if user.is_authenticated %}
+
+    <br /><br />
+    You are loged in as <strong> {{ user.username }} &nbsp; </strong>
+    {% else %}
+
+    <br />
+    <h2>Welcome to Developers Management System</h2>
+    <br />
+    To continue click on
+    <a class="btn btn-success btn-outline-light" href="{% url 'login' %}">
+        <i class="fas fa-sign-in-alt"></i> Log In
+    </a><br /><br />
+    Don't have account click here
+    <a style="text-decoration: none;" href="{% url 'signup' %}"> Sign up </a>
+
+{% endif %}
+</div>
+{% endblock %}

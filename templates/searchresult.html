@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Developers{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+{% if developers %}
+<h2 class="text-center">Search Result</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Location</th>
+            <th scope="col">Technologies</th>
+            <th scope="col">Domains</th>
+            <th scope="col">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for developer in developers %}
+
+        <tr>
+            <th scope="row">{{developer.id}}</th>
+            <td>{{developer.name}}</td>
+            <td>{{developer.email}}</td>
+            <td>{{developer.location}}</td>
+            <td>
+                {% for dev in developer.technology.all %}
+                {{ dev.name }} <br />
+                {% endfor %}
+            </td>
+            <td>
+                {% for dom in developer.domain.all %}
+                {{ dom.name }} <br />
+                {% endfor %}
+            </td>
+            <td>
+                <a class="btn btn-primary" href="{% url 'details' developer.id %} ">Details</a>               
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% else %}
+<div class="text-center">
+    <br />
+    <h2>Welcome to Developers Management System</h2>
+    <br />
+    To continue click on
+    <a class="btn btn-success btn-outline-light" href="{% url 'login' %}">
+        <i class="fas fa-sign-in-alt"></i> Log In
+    </a><br /><br />
+    Don't have account click here
+    <a style="text-decoration: none;" href="{% url 'signup' %}"> Sign up </a>
+</div>
+{% endif %}
+{% endblock %}

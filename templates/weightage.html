@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Weightage{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2>Weightage</h2>
+    <form method="POST" nonvalidate> {% csrf_token %}
+
+        {% for form in fm %}
+        <span class="text-danger">{{ form.errors }}</span> <br>
+        <label> {{ form.label }}</label> {{form}} <br>
+        {% endfor %}
+        <br>
+        <button class="btn btn-success btn-block " name="submit">Submit </button>
+    </form>
+</div>
+{% endblock %}

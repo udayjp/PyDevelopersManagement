@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %}Developers{% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="search">
+    <h2 class="text-center">Search Developers</h2>
+    <script>
+        $(document).ready(function () {
+            var url = '';
+            $("#locationBtn").click(function () {
+                $("#location").show();
+                $("#technology").hide();
+                $("#domain").hide();
+                $("#search").show();
+                url = 'searchresult/location/' + $("#location").val();
+            });
+            $("#location").change(function () {
+                url = 'searchresult/location/' + $("#location").val();
+            });
+            $("#technologyBtn").click(function () {
+                $("#location").hide();
+                $("#technology").show();
+                $("#domain").hide();
+                $("#search").show();
+                url = 'searchresult/technology/' + $("#technology").val();
+            });
+            $("#technology").change(function () {
+                url = 'searchresult/technology/' + $("#technology").val();
+            });
+            $("#domainBtn").click(function () {
+                $("#location").hide();
+                $("#technology").hide();
+                $("#domain").show();
+                $("#search").show();
+                url = 'searchresult/domain/' + $("#domain").val();
+            });
+            $("#domain").change(function () {
+                url = 'searchresult/domain/' + $("#domain").val();
+            });
+
+            $("#search").click(function () {
+                window.location.replace("http://127.0.0.1:8000/developers/"+url);
+            });
+        });
+    </script>
+    <div class="container">
+        Search by &nbsp;&nbsp;
+        <input class="form-check-input" type="radio" name="search" id="locationBtn">
+        <label class="form-check-label" for="locationBtn">
+            Location
+        </label>&nbsp;&nbsp;
+        <input class="form-check-input" type="radio" name="search" id="technologyBtn">
+        <label class="form-check-label" for="technologyBtn">
+            Technology
+        </label>&nbsp;&nbsp;
+        <input class="form-check-input" type="radio" name="search" id="domainBtn">
+        <label class="form-check-label" for="domainBtn">
+            Domain
+        </label>
+        <br /><br />
+        <select id="location" class="form-select" aria-label="location" style="display: none;">
+            {% for location in locations %}
+            <option value="{{location}}">{{location}}</option>
+            {% endfor %}
+        </select>
+
+        <select id="technology" class="form-select" aria-label="technology" style="display: none;">
+            {% for technology in technologies %}
+            <option value="{{technology}}">{{technology}}</option>
+            {% endfor %}
+        </select>
+
+        <select id="domain" class="form-select" aria-label="domain" style="display: none;">
+            {% for domain in domains %}
+            <option value="{{domain}}">{{domain}}</option>
+            {% endfor %}
+        </select>
+        <br />
+        <button id="search" class="btn btn-success btn-outline-light" style="display: none;"> Search </button>
+    </div>
+
+</div>
+
+{% if developers %}
+<h2 class="text-center">Search Result</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Location</th>
+            <th scope="col">Technologies</th>
+            <th scope="col">Domains</th>
+            <th scope="col">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for developer in developers %}
+
+        <tr>
+            <th scope="row">{{developer.id}}</th>
+            <td>{{developer.name}}</td>
+            <td>{{developer.email}}</td>
+            <td>{{developer.location}}</td>
+            <td>
+                {% for dev in developer.technology.all %}
+                {{ dev.name }} <br />
+                {% endfor %}
+            </td>
+            <td>
+                {% for dom in developer.domain.all %}
+                {{ dom.name }} <br />
+                {% endfor %}
+            </td>
+            <td>
+                <a class="btn btn-primary" href="{% url 'details' developer.id %} ">Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% else %}
+<div class="text-center">
+    <br />
+    <h2>Welcome to Developers Management System</h2>
+    <br />
+    To continue click on
+    <a class="btn btn-success btn-outline-light" href="{% url 'login' %}">
+        <i class="fas fa-sign-in-alt"></i> Log In
+    </a><br /><br />
+    Don't have account click here
+    <a style="text-decoration: none;" href="{% url 'signup' %}"> Sign up </a>
+</div>
+{% endif %}
+{% endblock %}
